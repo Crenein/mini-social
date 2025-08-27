@@ -104,8 +104,11 @@ function createPostElement(post, index) {
     postDiv.className = 'post';
     postDiv.style.animationDelay = `${index * 0.1}s`;
     
+    // Construir URL completa para la imagen si es relativa
+    const imageUrl = post.image.startsWith('/') ? `${API_URL}${post.image}` : post.image;
+    
     postDiv.innerHTML = `
-        <img src="${post.image}" alt="Post image" class="post-image">
+        <img src="${imageUrl}" alt="Post image" class="post-image">
 
         <div class="post-content">
             <div class="post-user">
@@ -215,26 +218,25 @@ function hideNewPostForm() {
 // Crear nuevo post
 async function createPost() {
     const username = usernameInput.value.trim();
-    const image = imageInput.value.trim();
+    const imageFile = imageInput.files[0];
     const description = descriptionInput.value.trim();
     
     // Validación simple
-    if (!username || !image || !description) {
+    if (!username || !imageFile || !description) {
         alert('Por favor completa todos los campos');
         return;
     }
     
+    // Crear FormData para enviar el archivo
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('description', description);
+    formData.append('file', imageFile);
+    
     try {
-        const response = await fetch(`${API_URL}/posts`, {
+        const response = await fetch(`${API_URL}/posts/upload`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: username,
-                image: image,
-                description: description
-            })
+            body: formData
         });
         
         if (response.ok) {

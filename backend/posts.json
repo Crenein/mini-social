@@ -66,5 +66,13 @@
       }
     ],
     "likes": 1
+  },
+  {
+    "id": 5,
+    "username": "lala",
+    "image": "/uploads/ace16db5-5741-4564-b173-4e77ea951d00.png",
+    "description": "awedawq",
+    "comments": [],
+    "likes": 1
   }
 ]

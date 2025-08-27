@@ -1,9 +1,12 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from typing import List, Dict, Any
 from pydantic import BaseModel
 import json
 import os
+import uuid
+import shutil
 
 # Crear la aplicación FastAPI
 app = FastAPI(title="Mini Social API", description="API simple para el feed de Mini Social")
@@ -11,11 +14,34 @@ app = FastAPI(title="Mini Social API", description="API simple para el feed de M
 # Archivo JSON para persistir los posts
 POSTS_FILE = "posts.json"
 
+# Carpeta para las imágenes subidas
+UPLOAD_DIR = "uploads"
+
+# Crear carpeta de uploads si no existe
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# Servir archivos estáticos (imágenes)
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+
 # Modelo para crear nuevos posts
 class NewPost(BaseModel):
     username: str
     image: str
     description: str
+
+def save_uploaded_file(file: UploadFile) -> str:
+    """Guarda un archivo subido y retorna la URL relativa"""
+    # Generar nombre único para el archivo
+    file_extension = os.path.splitext(file.filename)[1]
+    unique_filename = f"{uuid.uuid4()}{file_extension}"
+    file_path = os.path.join(UPLOAD_DIR, unique_filename)
+    
+    # Guardar el archivo
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    
+    # Retornar la URL relativa
+    return f"/uploads/{unique_filename}"
 
 # Funciones para manejar el archivo JSON
 def load_posts():
@@ -102,6 +128,37 @@ async def create_post(new_post: NewPost):
         "image": new_post.image,
         "description": new_post.description,
         "comments": [],  # Lista vacía de comentarios
+        "likes": 0
+    }
+    
+    posts.append(post)
+    save_posts(posts)
+    
+    return post
+
+@app.post("/posts/upload")
+async def create_post_with_file(
+    username: str = Form(...),
+    description: str = Form(...),
+    file: UploadFile = File(...)
+):
+    """Crear un nuevo post con archivo de imagen"""
+    # Validar tipo de archivo
+    if not file.content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="El archivo debe ser una imagen")
+    
+    # Guardar la imagen
+    image_url = save_uploaded_file(file)
+    
+    posts = load_posts()
+    
+    # Crear el nuevo post
+    post = {
+        "id": get_next_id(posts),
+        "username": username,
+        "image": image_url,
+        "description": description,
+        "comments": [],
         "likes": 0
     }
     

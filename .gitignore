@@ -63,3 +63,6 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+
+backend/uploads/
