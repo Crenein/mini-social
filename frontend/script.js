@@ -158,13 +158,34 @@ async function toggleLike(postId) {
             // Actualizar el post local
             post.likes = result.likes;
             
-            // Re-renderizar posts
-            renderPosts();
+            // Actualizar solo el botón específico en lugar de re-renderizar todo
+            updateLikeButton(postId, result.likes);
        
         }
     } catch (error) {
         console.error('Error al dar/quitar like:', error);
     }
+}
+
+// Función para actualizar solo el botón de like específico
+function updateLikeButton(postId, newLikesCount) {
+    // Encontrar el botón de like específico usando el postId
+    const likeButtons = document.querySelectorAll('.like-btn');
+    
+    likeButtons.forEach(button => {
+        // Verificar si este botón corresponde al post correcto
+        const onclickAttr = button.getAttribute('onclick');
+        if (onclickAttr && onclickAttr.includes(`toggleLike(${postId})`)) {
+            // Actualizar el ícono
+            const likeIcon = button.querySelector('.like-icon');
+            const likeCount = button.querySelector('.like-count');
+            
+            if (likeIcon && likeCount) {
+                likeIcon.textContent = newLikesCount > 0 ? '❤️' : '🤍';
+                likeCount.textContent = newLikesCount;
+            }
+        }
+    });
 }
 
 // Función para compartir post (simulada)
