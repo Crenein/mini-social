@@ -160,17 +160,7 @@ async function toggleLike(postId) {
             
             // Re-renderizar posts
             renderPosts();
-            
-            // Animación simple
-            setTimeout(() => {
-                const likeBtn = document.querySelector(`[onclick="toggleLike(${postId})"]`);
-                if (likeBtn) {
-                    likeBtn.style.transform = 'scale(1.3)';
-                    setTimeout(() => {
-                        likeBtn.style.transform = 'scale(1)';
-                    }, 200);
-                }
-            }, 100);
+       
         }
     } catch (error) {
         console.error('Error al dar/quitar like:', error);
@@ -254,10 +244,3 @@ function scrollToTop() {
         behavior: 'smooth'
     });
 }
-
-// Auto-refresh cada 30 segundos (opcional)
-// setInterval(() => {
-//     if (!loading) {
-//         loadPosts();
-//     }
-// }, 30000);
