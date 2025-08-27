@@ -78,24 +78,24 @@ function createPostElement(post, index) {
     postDiv.style.animationDelay = `${index * 0.1}s`;
     
     postDiv.innerHTML = `
-        <img src="${post.foto}" alt="Post image" class="post-image" onerror="this.src='https://via.placeholder.com/400x250/667eea/white?text=Imagen+no+disponible'">
-        
+        <img src="${post.image}" alt="Post image" class="post-image">
+
         <div class="post-content">
             <div class="post-user">
-                <div class="user-avatar">${post.usuario.charAt(0).toUpperCase()}</div>
-                <div class="user-name">${post.usuario}</div>
+                <div class="user-avatar">${post.username.charAt(0).toUpperCase()}</div>
+                <div class="user-name">${post.username}</div>
             </div>
-            
-            <div class="post-description">${post.descripcion}</div>
-            
+
+            <div class="post-description">${post.description}</div>
+
             <div class="post-actions">
                 <button class="action-btn like-btn" onclick="toggleLike(${post.id})">
-                    <span class="like-icon">${post.megusta > 0 ? '❤️' : '🤍'}</span>
-                    <span class="like-count">${post.megusta}</span>
+                    <span class="like-icon">${post.likes > 0 ? '❤️' : '🤍'}</span>
+                    <span class="like-count">${post.likes}</span>
                 </button>
                 
                 <div class="comments-count">
-                    💬 ${post.comentarios.length} comentarios
+                    💬 ${post.comments.length} comentarios
                 </div>
                 
                 <button class="action-btn share-btn" onclick="sharePost(${post.id})">
@@ -142,12 +142,7 @@ function sharePost(postId) {
     }
 }
 
-// Manejar errores de imágenes
-document.addEventListener('error', (e) => {
-    if (e.target.tagName === 'IMG') {
-        e.target.src = 'https://via.placeholder.com/400x250/667eea/white?text=Imagen+no+disponible';
-    }
-}, true);
+
 
 // Smooth scroll para el feed
 function scrollToTop() {
@@ -158,8 +153,8 @@ function scrollToTop() {
 }
 
 // Auto-refresh cada 30 segundos (opcional)
-setInterval(() => {
-    if (!loading) {
-        loadPosts();
-    }
-}, 30000);
+// setInterval(() => {
+//     if (!loading) {
+//         loadPosts();
+//     }
+// }, 30000);

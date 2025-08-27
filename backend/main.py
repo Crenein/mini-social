@@ -18,67 +18,49 @@ app.add_middleware(
 posts_data = [
     {
         "id": 1,
-        "usuario": "Ana García",
-        "foto": "https://picsum.photos/400/250?random=1",
-        "descripcion": "¡Hermoso atardecer en la playa! 🌅 Un día perfecto para relajarse.",
-        "comentarios": [
-            {"usuario": "Carlos", "texto": "¡Qué hermosa vista!"},
-            {"usuario": "María", "texto": "Me encanta esa playa"}
+        "username": "Ana García",
+        "image": "https://fastly.picsum.photos/id/12/400/250.jpg?hmac=lRVx-FWXSB1f69BtdBwcL5mJ1pKf8obBCBPVpl-Ov3M",
+        "description": "¡Hermoso atardecer en la playa! 🌅 Un día perfecto para relajarse.",
+        "comments": [
+            {"username": "Carlos", "text": "¡Qué hermosa vista!"},
+            {"username": "María", "text": "Me encanta esa playa"}
         ],
-        "megusta": 15
+        "likes": 15
     },
     {
         "id": 2,
-        "usuario": "Luis Martín",
-        "foto": "https://picsum.photos/400/250?random=2",
-        "descripcion": "Nuevo proyecto de programación terminado 💻 ¡Aprendiendo cada día más!",
-        "comentarios": [
-            {"usuario": "Elena", "texto": "¡Felicidades!"},
-            {"usuario": "Pedro", "texto": "¿Qué tecnologías usaste?"},
-            {"usuario": "Ana García", "texto": "Muy inspirador"}
+        "username": "Luis Martín",
+        "image": "https://fastly.picsum.photos/id/9/400/250.jpg?hmac=UEfGO3_VQdnRPR53mZz4Rx5NV-dtW__WJDeaqc-c2aw",
+        "description": "Nuevo proyecto de programación terminado 💻 ¡Aprendiendo cada día más!",
+        "comments": [
+            {"username": "Elena", "text": "¡Felicidades!"},
+            {"username": "Pedro", "text": "¿Qué tecnologías usaste?"},
+            {"username": "Ana García", "text": "Muy inspirador"}
         ],
-        "megusta": 23
+        "likes": 23
     },
     {
         "id": 3,
-        "usuario": "Sofia Chen",
-        "foto": "https://picsum.photos/400/250?random=3",
-        "descripcion": "Deliciosa cena casera 🍝 Nada como cocinar con amor para la familia.",
-        "comentarios": [
-            {"usuario": "Roberto", "texto": "Se ve delicioso!"}
+        "username": "Sofia Chen",
+        "image": "https://fastly.picsum.photos/id/250/400/250.jpg?hmac=5wN2lOf0VLAk18B1cnw4PyqLBjk2eGsqJW_SuQKaHQc",
+        "description": "¡Compré una cámara de fotos nueva y estoy súper feliz! 📸 Ya quiero salir a capturar momentos increíbles.",
+        "comments": [
+            {"username": "Roberto", "text": "¡Qué emocionante! ¿Qué modelo compraste?"}
         ],
-        "megusta": 8
+        "likes": 8
     },
     {
         "id": 4,
-        "usuario": "Miguel Torres",
-        "foto": "https://picsum.photos/400/250?random=4",
-        "descripción": "Entrenamiento matutino en el parque 🏃‍♂️ ¡La energía para todo el día!",
-        "comentarios": [
-            {"usuario": "Laura", "texto": "¡Qué disciplina!"},
-            {"usuario": "Carlos", "texto": "Me motivas a hacer ejercicio"}
+        "username": "Miguel Torres",
+        "image": "https://fastly.picsum.photos/id/237/400/250.jpg?hmac=PePeCqT_HNK24hBSuOnnbpe3Bmq-6n32sj8FJRHhpHY",
+        "description": "¡Conoce a mi nueva mascota! 🐕 Este pequeño perrito ya se ha robado mi corazón. ¡La vida es mucho mejor con una mascota fiel!",
+        "comments": [
+            {"username": "Laura", "text": "¡Qué hermoso! ¿Cómo se llama?"},
+            {"username": "Carlos", "text": "Los perros son los mejores compañeros"}
         ],
-        "megusta": 12
-    },
-    {
-        "id": 5,
-        "usuario": "Emma Wilson",
-        "foto": "https://picsum.photos/400/250?random=5",
-        "descripcion": "Nuevo libro terminado 📚 Recomiendo mucho esta novela de ciencia ficción.",
-        "comentarios": [
-            {"usuario": "David", "texto": "¿Cuál es el título?"},
-            {"usuario": "Sofia Chen", "texto": "Me gusta la ciencia ficción"}
-        ],
-        "megusta": 18
-    },
-    {
-        "id": 6,
-        "usuario": "Roberto Silva",
-        "foto": "https://picsum.photos/400/250?random=6",
-        "descripcion": "Concierto increíble anoche 🎵 La música en vivo no tiene comparación.",
-        "comentarios": [],
-        "megusta": 5
+        "likes": 12
     }
+  
 ]
 
 @app.get("/")
