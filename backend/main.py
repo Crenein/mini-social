@@ -145,7 +145,7 @@ async def root():
         "description": "API simple para el feed de posts",
         "endpoints": {
             "/posts": "GET - Obtener todos los posts, POST - Crear nuevo post",
-            "/posts/{id}": "GET - Obtener post específico",
+            "/posts/{id}": "GET - Obtener post específico, DELETE - Eliminar post",
             "/posts/{id}/like": "POST - Dar like, DELETE - Quitar like",
             "/docs": "Documentación interactiva de la API"
         }
@@ -215,6 +215,17 @@ async def unlike_post(post_id: int, db: Session = Depends(get_db)):
         post.likes -= 1
     db.commit()
     return {"message": "Like removido", "likes": post.likes}
+
+@app.delete("/posts/{post_id}")
+async def delete_post(post_id: int, db: Session = Depends(get_db)):
+    """Eliminar un post por ID"""
+    post = db.query(PostDB).filter(PostDB.id == post_id).first()
+    if post is None:
+        raise HTTPException(status_code=404, detail="Post no encontrado")
+    
+    db.delete(post)
+    db.commit()
+    return {"message": "Post eliminado correctamente", "id": post_id}
 
 if __name__ == "__main__":
     import uvicorn
