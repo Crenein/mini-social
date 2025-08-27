@@ -80,3 +80,9 @@ mini-social/
 
 - **FastAPI 0.104.1**: Framework web para crear APIs
 - **Uvicorn 0.24.0**: Servidor ASGI para ejecutar FastAPI
+
+
+
+# APIs interesantes
+
+https://medium.com/@diego.coder/las-mejores-apis-p%C3%BAblicas-para-practicar-programaci%C3%B3n-a7419ecc968e
