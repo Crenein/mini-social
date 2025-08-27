@@ -1,9 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Any
+from pydantic import BaseModel
 
 # Crear la aplicación FastAPI
 app = FastAPI(title="Mini Social API", description="API simple para el feed de Mini Social")
+
+# Modelo para crear nuevos posts
+class NewPost(BaseModel):
+    username: str
+    image: str
+    description: str
 
 # Configurar CORS para permitir conexiones desde el frontend
 app.add_middleware(
@@ -70,7 +77,9 @@ async def root():
         "message": "Mini Social API",
         "description": "API simple para el feed de posts",
         "endpoints": {
-            "/posts": "GET - Obtener todos los posts",
+            "/posts": "GET - Obtener todos los posts, POST - Crear nuevo post",
+            "/posts/{id}": "GET - Obtener post específico",
+            "/posts/{id}/like": "POST - Dar like, DELETE - Quitar like",
             "/docs": "Documentación interactiva de la API"
         }
     }
@@ -96,7 +105,46 @@ async def get_post(post_id: int):
     for post in posts_data:
         if post["id"] == post_id:
             return post
-    return {"error": "Post no encontrado"}, 404
+    raise HTTPException(status_code=404, detail="Post no encontrado")
+
+@app.post("/posts")
+async def create_post(new_post: NewPost):
+    """Crear un nuevo post"""
+    # Generar nuevo ID
+    new_id = max([post["id"] for post in posts_data]) + 1 if posts_data else 1
+    
+    # Crear el nuevo post
+    post = {
+        "id": new_id,
+        "username": new_post.username,
+        "image": new_post.image,
+        "description": new_post.description,
+        "comments": [],
+        "likes": 0
+    }
+    
+    # Agregar al inicio de la lista para que aparezca primero
+    posts_data.insert(0, post)
+    return post
+
+@app.post("/posts/{post_id}/like")
+async def like_post(post_id: int):
+    """Dar like a un post"""
+    for post in posts_data:
+        if post["id"] == post_id:
+            post["likes"] += 1
+            return {"message": "Like agregado", "likes": post["likes"]}
+    raise HTTPException(status_code=404, detail="Post no encontrado")
+
+@app.delete("/posts/{post_id}/like")
+async def unlike_post(post_id: int):
+    """Quitar like a un post"""
+    for post in posts_data:
+        if post["id"] == post_id:
+            if post["likes"] > 0:
+                post["likes"] -= 1
+            return {"message": "Like removido", "likes": post["likes"]}
+    raise HTTPException(status_code=404, detail="Post no encontrado")
 
 if __name__ == "__main__":
     import uvicorn
