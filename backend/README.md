@@ -10,12 +10,12 @@
 
 1. **Crear entorno virtual:**
    ```bash
-   python3 -m venv venv
+   python3 -m venv .venv
    ```
 
 2. **Activar entorno virtual:**
    ```bash
-   source venv/bin/activate
+   source .venv/bin/activate
    ```
 
 3. **Desactivar entorno virtual:**
@@ -27,12 +27,12 @@
 
 1. **Crear entorno virtual:**
    ```cmd
-   python -m venv venv
+   python -m venv .venv
    ```
 
 2. **Activar entorno virtual:**
    ```cmd
-   venv\Scripts\activate
+   .venv\Scripts\activate
    ```
 
 3. **Desactivar entorno virtual:**
