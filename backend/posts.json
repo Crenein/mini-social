@@ -14,7 +14,7 @@
         "text": "Me encanta esa playa"
       }
     ],
-    "likes": 15
+    "likes": 0
   },
   {
     "id": 2,
@@ -35,7 +35,7 @@
         "text": "Muy inspirador"
       }
     ],
-    "likes": 23
+    "likes": 1
   },
   {
     "id": 3,
@@ -48,7 +48,7 @@
         "text": "¡Qué emocionante! ¿Qué modelo compraste?"
       }
     ],
-    "likes": 8
+    "likes": 0
   },
   {
     "id": 4,
