@@ -10,8 +10,25 @@
     <div class="container">
         <header class="header">
             <h1>📱 Mini Social</h1>
-            <button id="refreshBtn" class="refresh-btn">🔄 Actualizar</button>
+            <div class="header-buttons">
+                <button id="newPostBtn" class="new-post-btn">➕ Nuevo Post</button>
+                <button id="refreshBtn" class="refresh-btn">🔄 Actualizar</button>
+            </div>
         </header>
+        
+        <!-- Formulario para crear nuevo post -->
+        <div id="newPostForm" class="new-post-form hidden">
+            <div class="form-container">
+                <h3>Crear nuevo post</h3>
+                <input type="text" id="usernameInput" placeholder="Tu nombre" required>
+                <input type="url" id="imageInput" placeholder="URL de la imagen" required>
+                <textarea id="descriptionInput" placeholder="¿Qué estás pensando?" required></textarea>
+                <div class="form-buttons">
+                    <button id="cancelBtn" class="cancel-btn">Cancelar</button>
+                    <button id="submitBtn" class="submit-btn">Publicar</button>
+                </div>
+            </div>
+        </div>
         
         <main class="feed" id="feed">
             <div class="loading">Cargando posts...</div>

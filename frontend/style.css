@@ -39,7 +39,13 @@ body {
     margin-bottom: 10px;
 }
 
-.refresh-btn {
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.refresh-btn, .new-post-btn {
     background: rgba(255,255,255,0.2);
     border: none;
     color: white;
@@ -50,7 +56,7 @@ body {
     transition: all 0.3s ease;
 }
 
-.refresh-btn:hover {
+.refresh-btn:hover, .new-post-btn:hover {
     background: rgba(255,255,255,0.3);
     transform: translateY(-2px);
 }
@@ -217,4 +223,88 @@ body {
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+/* Formulario de nuevo post */
+.new-post-form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.new-post-form.hidden {
+    display: none;
+}
+
+.form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.form-container h3 {
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+}
+
+.form-container input,
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.form-container textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.cancel-btn, .submit-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn {
+    background: #f1f1f1;
+    color: #666;
+}
+
+.cancel-btn:hover {
+    background: #e1e1e1;
+}
+
+.submit-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }

@@ -4,6 +4,13 @@ const API_URL = 'http://localhost:8000';
 // Elementos del DOM
 const feed = document.getElementById('feed');
 const refreshBtn = document.getElementById('refreshBtn');
+const newPostBtn = document.getElementById('newPostBtn');
+const newPostForm = document.getElementById('newPostForm');
+const cancelBtn = document.getElementById('cancelBtn');
+const submitBtn = document.getElementById('submitBtn');
+const usernameInput = document.getElementById('usernameInput');
+const imageInput = document.getElementById('imageInput');
+const descriptionInput = document.getElementById('descriptionInput');
 
 // Estado de la aplicación
 let posts = [];
@@ -16,6 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener para el botón de actualizar
     refreshBtn.addEventListener('click', () => {
         loadPosts();
+    });
+    
+    // Event listeners para el formulario de nuevo post
+    newPostBtn.addEventListener('click', () => {
+        showNewPostForm();
+    });
+    
+    cancelBtn.addEventListener('click', () => {
+        hideNewPostForm();
+    });
+    
+    submitBtn.addEventListener('click', () => {
+        createPost();
+    });
+    
+    // Cerrar formulario al hacer click fuera
+    newPostForm.addEventListener('click', (e) => {
+        if (e.target === newPostForm) {
+            hideNewPostForm();
+        }
     });
 });
 
@@ -108,28 +135,45 @@ function createPostElement(post, index) {
     return postDiv;
 }
 
-// Función para dar/quitar like (simulada)
-function toggleLike(postId) {
+// Función para dar/quitar like conectada al backend
+async function toggleLike(postId) {
     const post = posts.find(p => p.id === postId);
-    if (post) {
-        // Toggle like (simulado - en un app real esto sería una llamada al backend)
-        if (post.megusta > 0) {
-            post.megusta = 0;
+    if (!post) return;
+    
+    try {
+        let response;
+        // Si ya tiene likes, quitar like, sino dar like
+        if (post.likes > 0) {
+            response = await fetch(`${API_URL}/posts/${postId}/like`, {
+                method: 'DELETE'
+            });
         } else {
-            post.megusta = 1;
+            response = await fetch(`${API_URL}/posts/${postId}/like`, {
+                method: 'POST'
+            });
         }
         
-        // Re-renderizar posts
-        renderPosts();
-        
-        // Animación simple
-        const likeBtn = document.querySelector(`[onclick="toggleLike(${postId})"]`);
-        if (likeBtn) {
-            likeBtn.style.transform = 'scale(1.3)';
+        if (response.ok) {
+            const result = await response.json();
+            // Actualizar el post local
+            post.likes = result.likes;
+            
+            // Re-renderizar posts
+            renderPosts();
+            
+            // Animación simple
             setTimeout(() => {
-                likeBtn.style.transform = 'scale(1)';
-            }, 200);
+                const likeBtn = document.querySelector(`[onclick="toggleLike(${postId})"]`);
+                if (likeBtn) {
+                    likeBtn.style.transform = 'scale(1.3)';
+                    setTimeout(() => {
+                        likeBtn.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            }, 100);
         }
+    } catch (error) {
+        console.error('Error al dar/quitar like:', error);
     }
 }
 
@@ -138,7 +182,66 @@ function sharePost(postId) {
     const post = posts.find(p => p.id === postId);
     if (post) {
         // Simulamos compartir
-        alert(`¡Compartiendo post de ${post.usuario}!`);
+        alert(`¡Compartiendo post de ${post.username}!`);
+    }
+}
+
+// Mostrar formulario de nuevo post
+function showNewPostForm() {
+    newPostForm.classList.remove('hidden');
+    usernameInput.focus();
+}
+
+// Ocultar formulario de nuevo post
+function hideNewPostForm() {
+    newPostForm.classList.add('hidden');
+    // Limpiar campos
+    usernameInput.value = '';
+    imageInput.value = '';
+    descriptionInput.value = '';
+}
+
+// Crear nuevo post
+async function createPost() {
+    const username = usernameInput.value.trim();
+    const image = imageInput.value.trim();
+    const description = descriptionInput.value.trim();
+    
+    // Validación simple
+    if (!username || !image || !description) {
+        alert('Por favor completa todos los campos');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/posts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                image: image,
+                description: description
+            })
+        });
+        
+        if (response.ok) {
+            const newPost = await response.json();
+            // Agregar el nuevo post al inicio de la lista local
+            posts.unshift(newPost);
+            // Re-renderizar posts
+            renderPosts();
+            // Ocultar formulario
+            hideNewPostForm();
+            // Mensaje de éxito
+            alert('¡Post creado exitosamente!');
+        } else {
+            throw new Error('Error al crear el post');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al crear el post. Intenta de nuevo.');
     }
 }
 
