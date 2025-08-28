@@ -88,5 +88,16 @@ mini-social/
 https://medium.com/@diego.coder/las-mejores-apis-p%C3%BAblicas-para-practicar-programaci%C3%B3n-a7419ecc968e
 
 
-https://fastly.picsum.photos/id/96/400/250.jpg?hmac=nYj-6lhHIPgXAeYGXtuevM6GzULk0QxegNwghcxTVjg
+# preprar entorno window 
+
+- bajar proyecto
+- instalar vscode
+- instalar python (habiltar el agregado al PATH)
+- en vscode:
+- - instalar extension python
+- - seleccionar interprete de python 
+- - crear entorno virtual (capas no haga falta)
+- - select requirements.txt (capas no haga falta)
+- - ejecutar main.py desde vscode
+- - en 0.0.0.0 no funca se usa localhost:8000/docs
 
